@@ -1,0 +1,2 @@
+[console_scripts]
+agent-turn-limit = agent_turn_limit.__main__:main
