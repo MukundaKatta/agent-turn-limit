@@ -53,7 +53,7 @@ class TurnCounter:
     """
 
     hard_limit: int
-    warn_at: list[int] = field(default_factory=list)
+    warn_at: list[int | float] = field(default_factory=list)
     on_warn: Callable[[TurnWarning], None] | None = None
     stop_on_limit: bool = True
     label: str = "agent"
@@ -173,7 +173,7 @@ def make_turn_counter(
         warn_at = [0.5, 0.8]
     return TurnCounter(
         hard_limit=hard_limit,
-        warn_at=warn_at,  # type: ignore[arg-type]
+        warn_at=warn_at,
         on_warn=on_warn,
         stop_on_limit=stop_on_limit,
         label=label,

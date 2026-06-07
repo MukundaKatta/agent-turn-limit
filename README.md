@@ -104,7 +104,7 @@ Factory with sensible defaults (`warn_at=[0.5, 0.8]`).
 @dataclass
 class TurnCounter:
     hard_limit: int
-    warn_at: list[int | float]
+    warn_at: list[int | float]   # floats are treated as fractions of hard_limit
     on_warn: Callable[[TurnWarning], None] | None
     stop_on_limit: bool
     label: str
@@ -135,6 +135,34 @@ class TurnWarning:
 
 Subclass of `TurnLimitError`. Raised by `tick()` when `stop_on_limit=True` and the
 hard limit is exceeded.
+
+## CLI demo
+
+A small demo CLI is installed as `agent-turn-limit` (or run it as a module). It
+simulates an agent loop so you can see warnings and the hard cap in action:
+
+```bash
+$ python -m agent_turn_limit 5
+Turn 1: ok (4 remaining)
+  WARNING: agent: turn 2/5 (3 remaining)
+Turn 2: ok (3 remaining)
+Turn 3: ok (2 remaining)
+  WARNING: agent: turn 4/5 (1 remaining)
+Turn 4: ok (1 remaining)
+Turn 5: ok (0 remaining)
+Turn 6: LIMIT HIT — agent: hard turn limit of 5 exceeded (turn 6)
+```
+
+(Default warnings fire at 50% and 80% of `hard_limit`.)
+
+## Development
+
+The library has no runtime dependencies, and the test suite uses only the
+Python standard library (`unittest`) — no extra installs required:
+
+```bash
+python3 -m unittest discover -s tests
+```
 
 ## License
 
